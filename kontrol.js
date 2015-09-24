@@ -36,12 +36,14 @@ exec('cd /var/lib/lamassu-machine && openssl x509 -noout -in client.pem -fingerp
           var re_data = resp.body;
           var final_env = "";
           for(var attributename in re_data){
-            final_env += attributename+"='"+myobject[attributename])+"'\n";
+            final_env += attributename+"='"+myobject[attributename]+"'\n";
           }
 
           fs.writeFileSync(path.resolve(__dirname, '.env'),final_env, function(err){
             console.log("Setup could not be completed. Contact support.");
           });
+
+          console.log("File write complete: " + final_env);
         }
       })
 
