@@ -83,7 +83,7 @@ function check_for_commands(data) {
     case 'restart-machine':
       // reboot machine
       console.log('Restarting Machine');
-      exec('reboot');
+      exec('sudo reboot');
       break;
     case 'restart-lamassu-machine':
       // reboot lamassu-machine process

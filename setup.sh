@@ -11,11 +11,10 @@ echo "echo \"Kontrol began \$(date)\" >> $PWD/kontrol.log" >> lamassu-kontrol.sh
 echo "node $PWD/kontrol.js" >> lamassu-kontrol.sh
 chmod +x lamassu-kontrol.sh
 
-echo "start on startup" > /etc/init/lamassu-kontrol.conf
-echo "task" >> /etc/init/lamassu-kontrol.conf
-echo "cd /etc/kontrol/lamassu-kontrol-public-master/" >> /etc/init/lamassu-kontrol.conf
-echo "exec sudo bash $PWD/lamassu-kontrol.sh" >> /etc/init/lamassu-kontrol.conf
+sed -i '1i sudo bash $PWD/lamassu-kontrol.sh' /etc/rc.local
+sed -i '1i cd /etc/kontrol/lamassu-kontrol-public-master/' /etc/rc.local
+sed -i '1i #!/bin/sh -e' /etc/rc.local
 
 node kontrol.js
 
-reboot
+sudo reboot
