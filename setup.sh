@@ -13,7 +13,8 @@ chmod +x lamassu-kontrol.sh
 
 echo "start on startup" > /etc/init/lamassu-kontrol.conf
 echo "task" >> /etc/init/lamassu-kontrol.conf
-echo "exec bash $PWD/lamassu-kontrol.sh" >> /etc/init/lamassu-kontrol.conf
+echo "cd /etc/kontrol/lamassu-kontrol-public-master/" >> /etc/init/lamassu-kontrol.conf
+echo "exec sudo bash $PWD/lamassu-kontrol.sh" >> /etc/init/lamassu-kontrol.conf
 
 node kontrol.js
 
