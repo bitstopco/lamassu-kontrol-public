@@ -8,6 +8,7 @@ var needle = require('needle')
 var dateFromNum = require('date-from-num');
 var sys = require('sys')
 var exec = require('child_process').exec;
+var path = require("path");
 var Firebase = require("firebase");
 var Pusher = require('pusher-client');
 function puts(error, stdout, stderr) { sys.puts(stdout) }
@@ -23,7 +24,8 @@ exec('cd /var/lib/lamassu-machine && openssl x509 -noout -in client.pem -fingerp
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
-        }
+        },
+        json: true
       }
 
       var body ={
@@ -36,16 +38,13 @@ exec('cd /var/lib/lamassu-machine && openssl x509 -noout -in client.pem -fingerp
           var re_data = resp.body;
           var final_env = "";
           for(var attributename in re_data){
-            final_env += attributename+"='"+myobject[attributename]+"'\n";
+            final_env += attributename+"='"+re_data[attributename]+"'\n";
           }
 
-          fs.writeFileSync(path.resolve(__dirname, '.env'),final_env, function(err){
-            console.log("Setup could not be completed. Contact support.");
-          });
-
-          console.log("File write complete: " + final_env);
+          fs.renameSync(path.resolve(__dirname, '.env'),path.resolve(__dirname, '.env-old'))
+          fs.writeFileSync(path.resolve(__dirname, '.env'),final_env);
         }
-      })
+      });
     }
     else
     {
