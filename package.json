@@ -1,0 +1,29 @@
+{
+  "name": "lamassu-kontrol",
+  "version": "1.0.0",
+  "description": "Allows for \"remote kontrol\" over a Lamassu Machine by using predefined json commands that can be implicit (simple bash) or explicit (globally declared nodejs functions)",
+  "main": "kontrol.js",
+  "dependencies": {
+    "date-from-num": "^1.0.1",
+    "dotenv": "^1.2.0",
+    "firebase": "^2.2.9",
+    "needle": "^0.10.0",
+    "network-address": "^1.0.0",
+    "pusher-client": "^0.2.3",
+    "firebase":"2.2.9"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bitstopco/lamassu-kontrol.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bitstopco/lamassu-kontrol/issues"
+  },
+  "homepage": "https://github.com/bitstopco/lamassu-kontrol#readme"
+}
