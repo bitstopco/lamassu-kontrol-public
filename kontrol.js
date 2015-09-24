@@ -15,7 +15,7 @@ function puts(error, stdout, stderr) { sys.puts(stdout) }
 
 exec('cd /var/lib/lamassu-machine && openssl x509 -noout -in client.pem -fingerprint',
   function (error, stdout, stderr) {
-    global.fingerprint = stdout.replace("SHA1 Fingerprint=", "").trim().replace(":","");
+    global.fingerprint = stdout.replace("SHA1 Fingerprint=", "").trim().split(":").join("");
     
     if(process.env.custID != undefined)
     {
