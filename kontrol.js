@@ -46,8 +46,6 @@ exec('cd /var/lib/lamassu-machine && openssl x509 -noout -in client.pem -fingerp
           console.log("File write complete: " + final_env);
         }
       })
-
-      process.exit();
     }
     else
     {
