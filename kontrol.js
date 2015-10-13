@@ -95,7 +95,25 @@ function check_for_commands(data) {
       console.log('Updating lamassu-machine');
       exec('cd /opt/apps/machine/lamassu-machine && git pull && reboot');
       break;
+    case 'operation-hours':
+      console.log("Setting hours of operation");
+      set_hours_of_operation(re_data.open, re_data.close);
+      break;
     }
+}
+function set_hours_of_operation(open, close)
+{
+  var open_string;
+
+  if(open > close)
+    open_string = "today " + open + ":00";
+  else
+    open_string = "tomorrow " + open + ":00";
+
+  var cron_job = "* "+ close +" * * * rtcwake -m off -l -t $(date +%s -d '" + open_string+"')";
+  fs.unlinkSync('/etc/cron.daily/kontrol')
+  fs.writeFileSync('/etc/cron.daily/kontrol',cron_job);
+  exec('sudo reboot');
 }
 
 function start() {
