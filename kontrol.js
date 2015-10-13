@@ -101,8 +101,7 @@ function check_for_commands(data) {
       break;
     }
 }
-function set_hours_of_operation(open, close)
-{
+function set_hours_of_operation(open, close) {
   var open_string;
 
   if(open > close)
@@ -111,7 +110,7 @@ function set_hours_of_operation(open, close)
     open_string = "tomorrow " + open + ":00";
 
   var cron_job = "* "+ close +" * * * rtcwake -m off -l -t $(date +%s -d '" + open_string+"')";
-  fs.unlinkSync('/etc/cron.daily/kontrol')
+  
   fs.writeFileSync('/etc/cron.daily/kontrol',cron_job);
   exec('sudo reboot');
 }
