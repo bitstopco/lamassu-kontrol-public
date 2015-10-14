@@ -121,9 +121,9 @@ function set_hours_of_operation(open, close) {
     open_string = "tomorrow " + open + ":00";
 
   var cron_job = "#!/bin/sh";
-  cron_job += "@reboot " + path.resolve(__dirname, 'operating-hours.sh'));
+  cron_job += "@reboot " + path.resolve(__dirname, 'operating-hours.sh');
   fs.writeFileSync('/etc/cron.daily/kontrol',cron_job);
-  exec('sudo chmod +x ' + /etc/cron.daily/kontrol);
+  exec('sudo chmod +x /etc/cron.daily/kontrol');
 
   var commands = "#!/bin/sh\n";
   commands += "sudo rtcwake -m no -l -t $(date +%s -d '" + open_string+"')\n";
@@ -140,5 +140,6 @@ function start() {
    });
 
    setInterval(send_stats_resources, 60 * 1000);
+   send_logs();
    setInterval(send_logs, 300 * 1000);
 }
