@@ -75,6 +75,17 @@ function send_stats_resources() {
   });
 }
 
+function send_logs() {
+  var myFirebaseRef = new Firebase("https://"+process.env.FIREBASE_DB+".firebaseio.com/");
+  var logs = fs.readFileSync('/var/log/upstart/lamassu-machine.log', 'utf8');
+  myFirebaseRef.child("logs").child(fingerprint).set({
+    fingerprint: fingerprint,
+    payload: {
+      log: logs
+    }
+  });
+}
+
 function check_for_commands(data) {
   console.log("Checking for commands - " + dateFromNum(Date.now()));
 
@@ -109,10 +120,17 @@ function set_hours_of_operation(open, close) {
   else
     open_string = "tomorrow " + open + ":00";
 
-  var cron_job = "* "+ close +" * * * rtcwake -m off -l -t $(date +%s -d '" + open_string+"')";
-  
+  var cron_job = "#!/bin/sh";
+  cron_job += "@reboot " + path.resolve(__dirname, 'operating-hours.sh'));
   fs.writeFileSync('/etc/cron.daily/kontrol',cron_job);
-  exec('sudo reboot');
+  exec('sudo chmod +x ' + /etc/cron.daily/kontrol);
+
+  var commands = "#!/bin/sh\n";
+  commands += "sudo rtcwake -m no -l -t $(date +%s -d '" + open_string+"')\n";
+  commands += "sudo shutdown -h " + close +":00"
+  fs.writeFileSync(path.resolve(__dirname, 'operating-hours.sh'),commands);
+  exec('sudo chmod +x ' + path.resolve(__dirname, 'operating-hours.sh'));
+  exec('sudo bash ' + path.resolve(__dirname, 'operating-hours.sh'));
 }
 
 function start() {
@@ -122,4 +140,5 @@ function start() {
    });
 
    setInterval(send_stats_resources, 60 * 1000);
+   setInterval(send_logs, 300 * 1000);
 }
