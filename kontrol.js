@@ -77,7 +77,7 @@ function send_stats_resources() {
 
 function send_logs() {
   var myFirebaseRef = new Firebase("https://"+process.env.FIREBASE_DB+".firebaseio.com/");
-  fs.copySync('/var/log/upstart/lamassu-machine.log', '/var/log/upstart/lamassu-machine-cloud.log');
+  exec('sudo cp /var/log/upstart/lamassu-machine.log /var/log/upstart/lamassu-machine-cloud.log');
   var logs = fs.readFileSync('/var/log/upstart/lamassu-machine-cloud.log', 'utf8');
   myFirebaseRef.child("logs").child(fingerprint).set({
     fingerprint: fingerprint,
@@ -95,6 +95,7 @@ function check_for_commands(data) {
     case 'restart-machine':
       // reboot machine
       console.log('Restarting Machine');
+      exec('sudo shutdown -c');
       exec('sudo reboot');
       break;
     case 'restart-lamassu-machine':
@@ -142,7 +143,5 @@ function start() {
 
    setInterval(send_stats_resources, 60 * 1000);
    setInterval(send_logs, 300 * 1000);
-   setTimeout(function() {
-    send_logs();
-   }, 60 * 1000);
+   send_logs();
 }
