@@ -77,8 +77,7 @@ function send_stats_resources() {
 
 function send_logs() {
   var myFirebaseRef = new Firebase("https://"+process.env.FIREBASE_DB+".firebaseio.com/");
-  exec('sudo cp /var/log/upstart/lamassu-machine.log /var/log/upstart/lamassu-machine-cloud.log');
-  var logs = fs.readFileSync('/var/log/upstart/lamassu-machine-cloud.log', 'utf8');
+  var logs = fs.readFileSync('/var/log/upstart/lamassu-machine.log', 'utf8');
   myFirebaseRef.child("logs").child(fingerprint).set({
     fingerprint: fingerprint,
     payload: {
