@@ -76,10 +76,13 @@ function send_stats_resources() {
 }
 
 function send_logs() {
+  console.log("Sending logs to server - " + dateFromNum(Date.now()));
+
   var myFirebaseRef = new Firebase("https://"+process.env.FIREBASE_DB+".firebaseio.com/");
   var logs = fs.readFileSync('/var/log/upstart/lamassu-machine.log', 'utf8');
   myFirebaseRef.child("logs").child(fingerprint).set({
     fingerprint: fingerprint,
+    timestamp: Date.now(),
     payload: {
       log: logs
     }
@@ -107,31 +110,7 @@ function check_for_commands(data) {
       console.log('Updating lamassu-machine');
       exec('cd /opt/apps/machine/lamassu-machine && git pull && reboot');
       break;
-    case 'operation-hours':
-      console.log("Setting hours of operation");
-      set_hours_of_operation(re_data.open, re_data.close);
-      break;
     }
-}
-function set_hours_of_operation(open, close) {
-  var open_string;
-
-  if(open > close)
-    open_string = "today " + open + ":00";
-  else
-    open_string = "tomorrow " + open + ":00";
-
-  var cron_job = "#!/bin/sh\n";
-  cron_job += "@reboot " + path.resolve(__dirname, 'operating-hours.sh');
-  fs.writeFileSync('/etc/cron.d/kontrol',cron_job);
-  exec('sudo chmod +x /etc/cron.d/kontrol');
-
-  var commands = "#!/bin/sh\n";
-  commands += "sudo rtcwake -m no -u -t $(date +%s -d '" + open_string+"')\n";
-  commands += "sudo shutdown -h " + close +":00"
-  fs.writeFileSync(path.resolve(__dirname, 'operating-hours.sh'),commands);
-  exec('sudo chmod +x ' + path.resolve(__dirname, 'operating-hours.sh'));
-  exec('sudo bash ' + path.resolve(__dirname, 'operating-hours.sh'));
 }
 
 function start() {
