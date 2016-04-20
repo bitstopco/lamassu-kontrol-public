@@ -17,20 +17,21 @@ exec('cd /var/lib/lamassu-machine && openssl x509 -noout -in client.pem -fingerp
   function (error, stdout, stderr) {
     global.fingerprint = stdout.replace("SHA1 Fingerprint=", "").trim().split(":").join("");
     
-    if(process.env.custID != undefined)
+    if(process.env.token != undefined)
     {
       //Query for the new .env file (API)
       var options = {
         headers: {
           'Content-Type': 'application/json',
-          'Accept': 'application/json'
+          'Accept': 'application/json',
+          'Bitstop-Token': process.env.token
         },
         json: true
       }
 
       var body ={
         fingerprint: fingerprint,
-        custID: process.env.custID
+        token: process.env.token
       }
 
       needle.post("https://"+process.env.url+"/api/first_time", body, options, function(err, resp){
