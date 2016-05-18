@@ -142,7 +142,7 @@ function inject_lamassu_receipts(){
   
   console.log("PUTTING ENV VARIABLES")
   //Dump env vars
-  fs.writeFileSync(root_path + '.env', "BITSTOP_TOKEN=" + process.env.BITSTOP_TOKEN + "\n" + "FINGERPRINT=" +  fingerprint);
+  fs.writeFileSync(root_path + '.env', "BITSTOP_TOKEN=" + process.env.BITSTOP_TOKEN + "\n" + "FINGERPRINT=" +  process.env.FINGERPRINT);
 
   console.log("INJECTING CODE NOW")
   //Inject files
