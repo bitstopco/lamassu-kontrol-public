@@ -1,0 +1,11 @@
+  var emailSubmitBitcoin = document.getElementById('emailSubmitBitcoin')
+  touchEvent(emailSubmitBitcoin, function (e) {
+    var email = $('#inputSubmitEmailBitcoin').val()
+    buttonPressed('finishEmailCollect', {email: email})
+  })
+
+  var emailSubmitFiat = document.getElementById('emailSubmitFiat')
+  touchEvent(emailSubmitFiat, function (e) {
+    var email = $('#inputSubmitEmailFiat').val()
+    buttonPressed('finishEmailCollectFiat', {email: email})
+  })

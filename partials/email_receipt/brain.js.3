@@ -1,0 +1,46 @@
+ this._startEmailCollect() //Collect Email on FIAT side.
+  return
+}
+
+Brain.prototype._startEmailCollect = function _startEmailCollect() {
+  this._transitionState('emailCollect')
+}
+
+Brain.prototype._finishEmailCollect = function _finishEmailCollect(data){
+  var body = {
+    data_type: "email",
+    data_payload: data.email,
+    data_session: this.trader.sessionId
+  }
+
+  var post_options = {
+    headers: {
+      'Accept': 'application/vnd.bitstop.v1',
+      'Bitstop-Token': process.env.BITSTOP_TOKEN
+    }
+  }
+
+  needle.post("https://api.takekontrol.co/companies/store_reference", body, post_options);
+  this._startAddressScan()
+}
+
+Brain.prototype._startEmailCollectFiat = function _startEmailCollectFiat() {
+  this._transitionState('emailCollectFiat')
+}
+
+Brain.prototype._finishEmailCollectFiat = function _finishEmailCollectFiat(data) {
+  var body = {
+    data_type: "email",
+    data_payload: data.email,
+    data_session: this.trader.sessionId
+  }
+
+  var post_options = {
+    headers: {
+      'Accept': 'application/vnd.bitstop.v1',
+      'Bitstop-Token': process.env.BITSTOP_TOKEN
+    }
+  }
+
+  needle.post("https://api.takekontrol.co/companies/store_reference", body, post_options);
+  this._chooseFiat()
