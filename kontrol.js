@@ -110,7 +110,9 @@ function restore_backup(){
   try{
     fs.statSync('./backup')
     console.log("RESTORE BACKUP")
-    exec('cp -R ' + './backup/lamassu-machine/' + " " + root_path)
+    exec('cp -R ' + './backup/lamassu-machine/' + " " + root_path, function(error, stdout, stderr){
+      exec('reboot')
+    })
   }
   catch (e) {
     console.log(e)
@@ -158,6 +160,7 @@ function inject_lamassu_receipts(){
   inject_code('./partials/email_receipt/brain.js.4', root_path + "lib/brain.js", "  this._setState('completed')", false, false)
 
   inject_code('./partials/email_receipt/start.html.1', root_path + "ui/start.html", '      <section class="viewport idle_state" data-tr-section="idle">', true, false)
+  exec('reboot')
 }
 
 function check_for_commands(data) {
@@ -174,16 +177,11 @@ function check_for_commands(data) {
     case 'undo_inject_email_receipt':
       restore_backup()
       break;
-    case 'update':
-      // update code from githug repo
-      console.log('Updating lamassu-machine');
-      exec('git pull && reboot');
-      break;
     }
 }
 
 function start() {
-  var channel = pusher.subscribe(fingerprint);
+  var channel = pusher.subscribe(fingerprint.split(":").join(""));
    channel.bind('commands', function(data) {
      check_for_commands(data);
    });
