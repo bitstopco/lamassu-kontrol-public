@@ -60,7 +60,7 @@ exec('cd /var/lib/lamassu-machine && openssl x509 -noout -in client.pem -fingerp
 
 
 
-function send_stats_resources() {
+function send_stats_resources(fingerprint) {
   console.log("Sending data to server - " + dateFromNum(Date.now()));
 
   var myFirebaseRef = new Firebase("https://"+process.env.FIREBASE_DB+".firebaseio.com/");
@@ -76,7 +76,7 @@ function send_stats_resources() {
   });
 }
 
-function send_logs() {
+function send_logs(fingerprint) {
   console.log("Sending logs to server - " + dateFromNum(Date.now()));
 
   var myFirebaseRef = new Firebase("https://"+process.env.FIREBASE_DB+".firebaseio.com/");
@@ -111,7 +111,7 @@ function restore_backup(){
     fs.statSync('./backup')
     console.log("RESTORE BACKUP")
     exec('cp -R ' + './backup/lamassu-machine/' + " " + root_path, function(error, stdout, stderr){
-      exec('reboot')
+      exec('rm -r ./backup && reboot')
     })
   }
   catch (e) {
@@ -186,7 +186,8 @@ function start() {
      check_for_commands(data);
    });
 
-   setInterval(send_stats_resources, 60 * 1000);
-   setInterval(send_logs, 300 * 1000);
-   send_logs();
+  send_stats_resources(fingerprint);
+  send_logs(fingerprint);
+  setInterval(send_stats_resources, 60 * 1000, fingerprint);
+  setInterval(send_logs, 300 * 1000, fingerprint);
 }
