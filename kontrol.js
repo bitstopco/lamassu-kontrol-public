@@ -1,7 +1,7 @@
 require('dotenv').load();
 
 var minutes = 5;
-var root_path = "/Users/lazaroherrera/lamassu-machine-original/"
+var root_path = "/opt/apps/machine/lamassu-machine"
 
 var os = require('os');
 var address = require('network-address');
