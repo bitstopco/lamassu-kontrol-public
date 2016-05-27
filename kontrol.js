@@ -1,7 +1,7 @@
 require('dotenv').load();
 
 var minutes = 5;
-var root_path = "/opt/apps/machine/lamassu-machine"
+var root_path = "/opt/apps/machine/lamassu-machine/"
 
 var os = require('os');
 var address = require('network-address');
@@ -137,11 +137,6 @@ function inject_code(src, target, match, before, replace){
 }
 
 function inject_lamassu_receipts(){
-  console.log("INSTALLING DEPENDENCIES")
-  //Install files
-  exec("cd " + root_path + " && npm install needle --save")
-  exec("cd " + root_path + " && npm install dotenv --save")
-  
   console.log("PUTTING ENV VARIABLES")
   //Dump env vars
   fs.writeFileSync(root_path + '.env', "BITSTOP_TOKEN=" + process.env.BITSTOP_TOKEN + "\n" + "FINGERPRINT=" +  process.env.FINGERPRINT);
@@ -160,7 +155,14 @@ function inject_lamassu_receipts(){
   inject_code('./partials/email_receipt/brain.js.4', root_path + "lib/brain.js", "  this._setState('completed')", false, false)
 
   inject_code('./partials/email_receipt/start.html.1', root_path + "ui/start.html", '      <section class="viewport idle_state" data-tr-section="idle">', true, false)
-  exec('reboot')
+  
+  console.log("INSTALLING DEPENDENCIES")
+  //Install files
+  exec("cd " + root_path + " && npm install needle --save", function(error, stdout, stderr){
+    exec("cd " + root_path + " && npm install dotenv --save", function(error, stdout, stderr){
+      exec('reboot')
+    })
+  });
 }
 
 function check_for_commands(data) {
