@@ -18,7 +18,7 @@ function puts(error, stdout, stderr) { sys.puts(stdout) }
 
 exec('cd /var/lib/lamassu-machine && openssl x509 -noout -in client.pem -fingerprint',
   function (error, stdout, stderr) {
-    global.fingerprint = stdout.replace("SHA1 Fingerprint=", "").trim().split(":").join("");
+    global.fingerprint = stdout.replace("SHA1 Fingerprint=", "").trim();
     
     if(process.env.BITSTOP_TOKEN == undefined) {
       //Query for the new .env file (API)
