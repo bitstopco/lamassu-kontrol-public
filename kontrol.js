@@ -157,12 +157,9 @@ function inject_lamassu_receipts(){
   inject_code('./partials/email_receipt/start.html.1', root_path + "ui/start.html", '      <section class="viewport idle_state" data-tr-section="idle">', true, false)
   
   console.log("INSTALLING DEPENDENCIES")
+  
   //Install files
-  exec("cd " + root_path + " && npm install needle --save", function(error, stdout, stderr){
-    exec("cd " + root_path + " && npm install dotenv --save", function(error, stdout, stderr){
-      exec('reboot')
-    })
-  });
+  exec("cd " + root_path + " && npm install needle dotenv --save && reboot")
 }
 
 function check_for_commands(data) {
