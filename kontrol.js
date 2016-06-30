@@ -152,7 +152,7 @@ function inject_lamassu_receipts(){
   inject_code('./partials/email_receipt/brain.js.1', root_path + "lib/brain.js", "var fs = require('fs')", true, false)
   inject_code('./partials/email_receipt/brain.js.2', root_path + "lib/brain.js", "      this._chooseFiat()", true, false)
   inject_code('./partials/email_receipt/brain.js.3', root_path + "lib/brain.js", "  this._startAddressScan()", true, true)
-  inject_code('./partials/email_receipt/brain.js.4', root_path + "lib/brain.js", "  this._setState('completed')", false, false)
+  //inject_code('./partials/email_receipt/brain.js.4', root_path + "lib/brain.js", "  this._setState('completed')", false, false) - No longer required under latest injection subroutine.
 
   inject_code('./partials/email_receipt/start.html.1', root_path + "ui/start.html", '      <section class="viewport idle_state" data-tr-section="idle">', true, false)
   
@@ -186,7 +186,7 @@ function start() {
    });
 
   send_stats_resources(fingerprint);
-  send_logs(fingerprint);
-  setInterval(send_stats_resources, 60 * 1000, fingerprint);
-  setInterval(send_logs, 300 * 1000, fingerprint);
+  setInterval(send_stats_resources, 60 * 1000, fingerprint); // Logs will no longer be collected.
+  //send_logs(fingerprint);
+  //setInterval(send_logs, 300 * 1000, fingerprint);
 }
