@@ -5,18 +5,8 @@ if [ "$(whoami)" != "root" ]; then
 fi
 
 npm install
-
-echo "#!/bin/sh" > lamassu-kontrol.sh
-echo "echo \"Kontrol began \$(date)\" >> $PWD/kontrol.log" >> lamassu-kontrol.sh
-echo "node $PWD/kontrol.js" >> lamassu-kontrol.sh
-chmod +x lamassu-kontrol.sh
-
-if grep -q "sudo bash $PWD/lamassu-kontrol.sh" "/etc/rc.local"; then
-	sed -i '1i sudo bash $PWD/lamassu-kontrol.sh' /etc/rc.local
-	sed -i '1i cd /etc/kontrol/lamassu-kontrol-public-master/' /etc/rc.local
-	sed -i '1i #!/bin/sh -e' /etc/rc.local   
-fi
-
 node kontrol.js
 
-sudo reboot
+npm install -g forever
+npm install -g forever-service
+forever-service install kontrol --script kontrol.js
