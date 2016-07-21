@@ -9,4 +9,4 @@ node kontrol.js
 
 npm install -g forever
 npm install -g forever-service
-forever-service install kontrol --script kontrol.js
+forever-service install test --script kontrol.js
